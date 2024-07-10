@@ -23,10 +23,37 @@ router.post("/register", async (req, res) => {
     res.send("User registered");
   } catch (error) {
     console.log(error);
-    res.send("User registration failed");
+    res.json(error);
   }
 });
 
-router.post("/login", async (req, res) => {});
+router.post("/login", async (req, res) => {
+  try {
+    const userExists = await User.findOne({ email: req.body.email });
+    if (!userExists) {
+      return res.send({
+        success: false,
+        message: "User doesn't exist"
+      });
+    }
+
+    const validPassword = await bcrypt.compare(req.body.password, userExists.password);
+    if (!validPassword) {
+      return res.send({
+        success: false,
+        message: "Invalid password"
+      });
+    }
+
+    res.send({
+      success: true,
+      message: "User logged in"
+    });
+  }
+  catch (error) {
+    console.log(error);
+    res.json(error);
+  }
+});
 
 module.exports = router;
