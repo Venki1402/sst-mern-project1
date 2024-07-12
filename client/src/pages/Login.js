@@ -1,11 +1,24 @@
 import React, { useEffect } from "react";
 import { Button, Form, Input } from "antd";
-import { Link } from "react-router-dom";
-import { RegisterUser } from "../calls/user";
+import { Link, useNavigate } from "react-router-dom";
+import { LoginUser } from "../calls/user";
 import { message } from "antd";
 
 function Login() {
+  const navigate = useNavigate();
   const onFinish = async (values) => {
+    try {
+      const response = await LoginUser(values);
+      if (response.success) {
+        message.success(response.message);
+        navigate("/");
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Something went wrong");
+    }
     console.log(values);
   };
 
