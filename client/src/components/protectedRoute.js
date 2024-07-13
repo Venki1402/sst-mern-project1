@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { GetCurrentUser } from "../calls/users";
+import { GetCurrentUser } from "../calls/user";
 import { useNavigate } from "react-router-dom";
 import { message, Layout, Menu } from "antd";
 import { Header } from "antd/es/layout/layout";
